@@ -21,7 +21,7 @@ stages {
           }
         }
 		stage('UnitTest'){
-			agent {label 'linux_Slave'}
+			agent {label 'linux_SlaveNode'}
 			when{
 				expression{
 					params.ExecuteTest == true
