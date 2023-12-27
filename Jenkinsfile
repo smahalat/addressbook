@@ -17,8 +17,7 @@ stages {
 		 steps {
 			script{
 			       sshagent(['build-server']) {
-           
-				echo "Compiling in ${params.ENV} environment"
+                                echo "Compiling in ${params.ENV} environment"
 				// sh 'mvn compile'
 				sh "scp -o StrictHostKeyChecking=no server-config.sh ${BUILD_SERVER}:/home/ec2-user"
 				sh "ssh -o StrictHostKeyChecking=no ${BUILD_SERVER} 'bash ~/server-config.sh'"  
