@@ -14,6 +14,7 @@ pipeline {
  }
 stages {
         stage('Compile') {
+		agent any
 		 steps {
 			script{
 			       sshagent(['build-server']) {
