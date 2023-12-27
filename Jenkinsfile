@@ -14,9 +14,10 @@ pipeline {
  }
 stages {
         stage('Compile') {
-			sshagent(['build-server']) {
-            steps {
-			    script{
+		 steps {
+			script{
+			       sshagent(['build-server']) {
+           
 				echo "Compiling in ${params.ENV} environment"
 				// sh 'mvn compile'
 				sh "scp -o StrictHostKeyChecking=no server-config.sh ${BUILD_SERVER}:/home/ec2-user"
