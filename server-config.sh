@@ -17,4 +17,4 @@ sudo systemctl start docker
  fi
 
 # sudo docker build -t $1:$2 /home/ec2-user/addressbook
-mvn Compile
+mvn compile
