@@ -16,5 +16,5 @@ sudo systemctl start docker
  git checkout master
  fi
 
-# sudo docker build -t $1:$2 /home/ec2-user/addressbook
-mvn compile
+sudo docker build -t $1:$2 /home/ec2-user/addressbook
+#mvn compile
