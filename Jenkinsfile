@@ -2,7 +2,7 @@ pipeline {
     agent none
     tools{
         maven 'mymaven'
-        jdk 'myjava'
+        jdk 'myJava'
     }
 
     parameters{
@@ -12,9 +12,9 @@ pipeline {
     }
 
     environment{
-        BUILD_SERVER='ec2-user@172.31.44.111'
+        BUILD_SERVER='ec2-user@172.31.12.47'
         IMAGE_NAME='devopstrainer/java-mvn-privaterepos'
-        //DEPLOY_SERVER='ec2-user@172.31.36.141'
+        DEPLOY_SERVER='ec2-user@172.31.12.47'
     }
 
     stages {
@@ -22,12 +22,14 @@ pipeline {
             agent any
             steps {
                 script{   
-           // sshagent(['build-server']) {
+                sshagent(['build-server']) {
                          
                 echo "Compiling in ${params.ENV} environment"
-                sh 'mvn compile'
+            //  sh 'mvn compile'
+                sh "scp -o StrictHostKeyChecking=no server-config.sh ${BUILD_SERVER}:/home/ec2-user"
+                sh "ssh -o StrictHostKeyChecking=no ${BUILD_SERVER} 'bash ~/server-config.sh'"   
                 
-           // }
+            }
             }
             } 
         }
