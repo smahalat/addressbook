@@ -12,9 +12,9 @@ pipeline {
     }
 
     environment{
-        BUILD_SERVER='ec2-user@172.31.12.47'
+        BUILD_SERVER='ec2-user@172.31.13.160'
         IMAGE_NAME='devopstrainer/java-mvn-privaterepos'
-        DEPLOY_SERVER='ec2-user@172.31.12.47'
+        DEPLOY_SERVER='ec2-user@172.31.15.43
     }
 
     stages {
@@ -22,14 +22,14 @@ pipeline {
             agent any
             steps {
                 script{   
-                sshagent(['build-server']) {
+               // sshagent(['build-server']) {
                          
                 echo "Compiling in ${params.ENV} environment"
-            //  sh 'mvn compile'
-                sh "scp -o StrictHostKeyChecking=no server-config.sh ${BUILD_SERVER}:/home/ec2-user"
-                sh "ssh -o StrictHostKeyChecking=no ${BUILD_SERVER} 'bash ~/server-config.sh'"   
+                sh 'mvn compile'
+             //   sh "scp -o StrictHostKeyChecking=no server-config.sh ${BUILD_SERVER}:/home/ec2-user"
+             //   sh "ssh -o StrictHostKeyChecking=no ${BUILD_SERVER} 'bash ~/server-config.sh'"   
                 
-            }
+           // }
             }
             } 
         }
@@ -70,26 +70,6 @@ pipeline {
                 }
             }
         }
-       /* stage("Provision deploy server with TF"){
-            environment{
-                   AWS_ACCESS_KEY_ID =credentials("jenkins_aws_access_key_id")
-                   AWS_SECRET_ACCESS_KEY=credentials("jenkins_aws_secret_access_key")
-            }
-             agent any
-                   steps{
-                       script{
-                           dir('terraform'){
-                           sh "terraform init"
-                           sh "terraform apply --auto-approve"
-                           EC2_PUBLIC_IP = sh(
-                            script: "terraform output ec2-public-ip",
-                            returnStdout: true
-                           ).trim()
-                           sh "terraform destroy --auto-approve"
-                       }
-                       }
-                   }
-        }  */
         stage("Deploy"){
             agent any
             input{
@@ -106,10 +86,10 @@ pipeline {
                 echo "Deploying in ${params.ENV} environment"
                 //sh 'mvn compile'
                 
-                sh "ssh -o StrictHostKeyChecking=no ec2-user@${EC2_PUBLIC_IP} sudo yum install docker -y"
-                sh "ssh ec2-user@${EC2_PUBLIC_IP} sudo systemctl start docker"
-                sh "ssh ec2-user@${EC2_PUBLIC_IP} sudo docker login -u ${USERNAME} -p ${PASSWORD}"
-                sh "ssh ec2-user@${EC2_PUBLIC_IP} sudo docker run -itd -p 8001:8080 ${IMAGE_NAME}:${BUILD_NUMBER}"
+                sh "ssh -o StrictHostKeyChecking=no ec2-user@${DEPLOY_SERVER} sudo yum install docker -y"
+                sh "ssh ec2-user@${DEPLOY_SERVER} sudo systemctl start docker"
+                sh "ssh ec2-user@${BUILD_SERVER} sudo docker login -u ${USERNAME} -p ${PASSWORD}"
+                sh "ssh ec2-user@${DEPLOY_SERVER} sudo docker run -itd -p 8001:8080 ${IMAGE_NAME}:${BUILD_NUMBER}"
                 }
             }
 
