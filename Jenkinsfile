@@ -14,7 +14,7 @@ pipeline {
     environment{
         BUILD_SERVER='ec2-user@172.31.13.160'
         IMAGE_NAME='devopstrainer/java-mvn-privaterepos'
-        DEPLOY_SERVER='ec2-user@172.31.15.43
+        DEPLOY_SERVER='ec2-user@172.31.15.43'
     }
 
     stages {
