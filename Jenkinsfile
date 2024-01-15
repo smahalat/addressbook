@@ -1,8 +1,8 @@
 pipeline {
     agent none
     tools{
-        maven 'mymaven'
-        jdk 'myJava'
+        maven 'myMaven'
+        jdk 'MyJava'
     }
 
     parameters{
