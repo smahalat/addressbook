@@ -13,7 +13,7 @@ pipeline {
 
     environment{
         BUILD_SERVER='ec2-user@172.31.13.160'
-        IMAGE_NAME='devopstrainer/java-mvn-privaterepos'
+        IMAGE_NAME='sagarmahalatkar/java-mvn-privaterepos'
         DEPLOY_SERVER='ec2-user@172.31.15.43'
     }
 
@@ -88,7 +88,7 @@ pipeline {
                 
                 sh "ssh -o StrictHostKeyChecking=no ec2-user@${DEPLOY_SERVER} sudo yum install docker -y"
                 sh "ssh ec2-user@${DEPLOY_SERVER} sudo systemctl start docker"
-                sh "ssh ec2-user@${BUILD_SERVER} sudo docker login -u ${USERNAME} -p ${PASSWORD}"
+                sh "ssh ec2-user@${DEPLOY_SERVER} sudo docker login -u ${USERNAME} -p ${PASSWORD}"
                 sh "ssh ec2-user@${DEPLOY_SERVER} sudo docker run -itd -p 8001:8080 ${IMAGE_NAME}:${BUILD_NUMBER}"
                 }
             }
